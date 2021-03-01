@@ -1,0 +1,62 @@
+version: "3"
+services:
+    padmin-db:
+        container_name: padmin-db
+        build:
+            context: "./images"
+            dockerfile: "Dockerfile-DB"
+        ports:
+            - "${DB_PORT}:3306"
+        expose:
+            - "${DB_PORT}"
+        command: --default-authentication-plugin=mysql_native_password           
+        environment:
+            MYSQL_USER: root
+            MYSQL_ROOT_PASSWORD: p@dmin
+            MYSQL_DATABASE: padmin
+        volumes:
+            - ./padmin-api/db/data:/var/lib/mysql
+        restart: always
+        networks: 
+            - padmin
+
+    padmin-api:
+        container_name: padmin-api
+        build:
+            context: "./images"
+            dockerfile: "Dockerfile-API"
+        restart: always
+        volumes:
+            - ./padmin-api:/home/node/app
+        ports:
+            - "9001"
+        command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm start'
+        depends_on: 
+            - padmin-db
+        # links:
+        #     - padmin-api:padmin-api
+        networks: 
+            - padmin
+
+    padmin-nginx:
+        container_name: padmin-nginx
+        build:
+            context: "./images"
+            dockerfile: "Dockerfile-WEB"
+        restart: always
+        volumes: 
+            - ./padmin-web/html:/usr/share/nginx/html
+            - ./padmin-web/conf:/etc/nginx/conf.d
+        ports: 
+            - "${APP_PORT}:80"
+            - "${API_PORT}:9002"
+        # command: nginx -s reload
+        depends_on: 
+            - padmin-db
+            - padmin-api
+        networks: 
+        - padmin
+
+networks:
+  padmin:
+    driver: bridge
