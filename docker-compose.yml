@@ -3,8 +3,8 @@ services:
     padmin-db:
         container_name: padmin-db
         build:
-            context: "./images"
-            dockerfile: "Dockerfile-DB"
+            context: "./padmin-api/db"
+            dockerfile: "Dockerfile"
         ports:
             - "${DB_PORT}:3306"
         expose:
@@ -23,39 +23,63 @@ services:
     padmin-api:
         container_name: padmin-api
         build:
-            context: "./images"
-            dockerfile: "Dockerfile-API"
+            context: "./padmin-api"
+            dockerfile: "Dockerfile"
         restart: always
         volumes:
             - ./padmin-api:/home/node/app
         ports:
-            - "9001"
-        command: bash -c 'while !</dev/tcp/db/3306; do sleep 1; done; npm start'
+            - "${API_PORT}:9001"
         depends_on: 
             - padmin-db
-        # links:
-        #     - padmin-api:padmin-api
+        command: sh -c "/wait && npm install && npm start"
+        environment:
+            - WAIT_HOSTS=padmin-db:3306
+            - WAIT_HOSTS_TIMEOUT=300
+            - WAIT_SLEEP_INTERVAL=30
+            - WAIT_HOST_CONNECT_TIMEOUT=30
         networks: 
             - padmin
 
-    padmin-nginx:
-        container_name: padmin-nginx
+    padmin-app:
+        container_name: padmin-app
         build:
-            context: "./images"
-            dockerfile: "Dockerfile-WEB"
+            context: "./padmin-app"
+            dockerfile: "Dockerfile"
         restart: always
         volumes: 
-            - ./padmin-web/html:/usr/share/nginx/html
-            - ./padmin-web/conf:/etc/nginx/conf.d
+            - ./padmin-app:/home/node/app
         ports: 
-            - "${APP_PORT}:80"
-            - "${API_PORT}:9002"
-        # command: nginx -s reload
+            - "${APP_PORT}:3000"
+        depends_on: 
+            - padmin-db
+            - padmin-api
+        command: sh -c "npm install && npm run build && npm start"
+        # environment:
+        #     - WAIT_HOSTS=padmin-api:9001
+        #     - WAIT_HOSTS_TIMEOUT=300
+        #     - WAIT_SLEEP_INTERVAL=30
+        #     - WAIT_HOST_CONNECT_TIMEOUT=30
+        networks: 
+            - padmin
+
+    padmin-proxy:
+        container_name: padmin-proxy
+        build:
+            context: "./padmin-proxy"
+            dockerfile: "Dockerfile"
+        restart: always
+        volumes: 
+            - ./padmin-proxy/conf:/etc/nginx
+            #- ./padmin-proxy/html:/usr/share/nginx/html
+        ports: 
+            - "${NGINX_PORT}:80"
+        command: nginx -s reload
         depends_on: 
             - padmin-db
             - padmin-api
         networks: 
-        - padmin
+            - padmin
 
 networks:
   padmin:

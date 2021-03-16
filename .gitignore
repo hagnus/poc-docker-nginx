@@ -1,0 +1,5 @@
+/padmin-api/db/data/*
+/padmin-api/node_modules/*
+
+/padmin-app/node_modules/*
+/padmin-app/.next/*

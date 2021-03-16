@@ -24,7 +24,7 @@ app.get('/check', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  connection.query('SELECT * FROM product', function (error, results) {
+  connection.query('SELECT * FROM products', function (error, results) {
 
     if (error) { 
       throw error
