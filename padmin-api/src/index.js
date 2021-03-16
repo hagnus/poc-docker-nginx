@@ -1,5 +1,5 @@
 const express = require('express');
-const sql = require("./db.js");
+const db = require("./db.js");
 
 const PORT = 9001;
 const HOST = '0.0.0.0';
@@ -15,14 +15,16 @@ app.get('/check', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  sql.query('SELECT * FROM products', function (error, results) {
+  console.log("ENTRANDO....");
 
-    if (error) { 
-      throw error
-    };
-
-    res.send(results);
+  db.select().from('products')
+  .returning()
+  .then(data => res.send(data))
+  .catch((error) => {
+    console.warn(error);
   });
+
+  // res.send("SUCESS!!!");
 });
 
 app.listen(PORT, HOST, () => {

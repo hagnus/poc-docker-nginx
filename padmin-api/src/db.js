@@ -1,16 +1,15 @@
-const mysql = require('mysql');
+// const connection = require('./knexfile')[process.env.NODE_ENV || 'development'];
+// const knex = require('knex')(connection)
 
-const connection = mysql.createConnection({
-  host: 'padmin-db',
-  database: 'padmin',
-  port: '3306',
-  user: 'root',
-  password: 'p@dmin'
+const knex = require('knex')({
+    client: 'mysql',
+    connection: {
+      host : 'padmin-db',
+      database : 'padmin',
+      user : 'root',
+      password : 'p@dmin',
+    },
+    useNullAsDefault: true
 });
 
-connection.connect(error => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
-
-module.exports = connection;
+module.exports = knex;
