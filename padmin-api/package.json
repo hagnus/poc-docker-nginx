@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "nodemon ./src/index"
+    "dev:watch": "npx concurrently \"npm run build:watch\" \"npm run dev:run\"",
+    "dev:run": "npx nodemon ./src/index",
+    "start": "node ./src/index"
   },
   "keywords": [
     "Docker"
@@ -13,6 +15,7 @@
   "author": "Adriano Falcao",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^6.0.0",
     "nodemon": "^1.18.10"
   },
   "dependencies": {
