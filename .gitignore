@@ -3,3 +3,5 @@
 
 /padmin-app/node_modules/*
 /padmin-app/.next/*
+
+.env

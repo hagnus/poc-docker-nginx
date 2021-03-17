@@ -5,11 +5,11 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      host : 'localhost',
-      port: '3402',
+      host : 'padmin-db',
       database : 'padmin',
-      user : 'root',
-      password : 'p@dmin',
+      port: process.env.DB_PORT || 3306,
+      user : process.env.DB_USER || 'root',
+      password : process.env.DB_PASSWORD || 'root',
     },
     pool: {
       min: 2,

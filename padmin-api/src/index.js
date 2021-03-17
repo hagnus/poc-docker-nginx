@@ -1,9 +1,8 @@
 const express = require('express');
 const products = require("./controllers/ProductController");
 
-const PORT = 9001;
+const PORT = process.env.API_PORT || 9001;
 const HOST = '0.0.0.0';
-console.log(process.env.API_PORT);
 
 const app = express();
 app.use(express.json())  
@@ -23,5 +22,5 @@ app.delete('/products/:id', products.delete);
 app.put('/products/:id', products.update);
 
 app.listen(PORT, HOST, () => {
-  console.log('Listening on port 9001');
+  console.log(`Listening on port ${PORT}`);
 })
