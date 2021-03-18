@@ -6,8 +6,8 @@
   "scripts": {
     "test": "test",
     "dev:watch": "npx concurrently \"npm run build:watch\" \"npm run dev:run\"",
-    "dev:run": "npx nodemon ./src/index",
-    "start": "node ./src/index"
+    "dev:run": "npx nodemon -L ./src/app",
+    "start": "node ./src/app"
   },
   "keywords": [
     "Docker"
