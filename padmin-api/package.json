@@ -7,7 +7,7 @@
     "test": "test",
     "dev:watch": "npx concurrently \"npm run build:watch\" \"npm run dev:run\"",
     "dev:run": "npx nodemon -L ./src/app",
-    "start": "node ./src/app"
+    "start": "node -L ./src/app"
   },
   "keywords": [
     "Docker"
