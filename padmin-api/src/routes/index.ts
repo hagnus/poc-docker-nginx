@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import productRoutes from './ProductRoutes.js';
+import productRoutes from './ProductRoutes';
 
-const routes = new Router();
+const routes = Router();
 
 routes.get('/', (request, response) => {
   response.send('Welcome to API');

@@ -1,6 +1,6 @@
-// Update with your config settings.
+import knex from 'knex';
 
-export default {
+const DB_CONFIGURATION = {
   development: {
     client: 'mysql',
     connection: {
@@ -26,3 +26,5 @@ export default {
 
   },
 };
+
+export default knex(DB_CONFIGURATION[process.env.NODE_ENV || 'development']);

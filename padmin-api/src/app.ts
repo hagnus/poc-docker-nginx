@@ -1,7 +1,7 @@
 import express from 'express';
-import routes from './routes/index.js';
+import routes from './routes/index';
 
-const PORT = process.env.API_PORT || 9001;
+const PORT = process.env.API_PORT ? parseInt(process.env.API_PORT) : 9001;
 const HOST = '0.0.0.0';
 
 const app = express();
