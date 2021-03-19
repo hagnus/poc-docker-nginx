@@ -1,13 +1,15 @@
 {
+  "type": "module",
   "name": "padmin-api",
   "version": "1.0.0",
   "description": "Petit adminstration api",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "test",
+    "lint": "eslint",
     "dev:watch": "npx concurrently \"npm run build:watch\" \"npm run dev:run\"",
     "dev:run": "npx nodemon -L ./src/app",
-    "start": "node -L ./src/app"
+    "start": "node ./src/app.js"
   },
   "keywords": [
     "Docker"
@@ -16,6 +18,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^6.0.0",
+    "eslint": "^7.22.0",
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^1.18.10"
   },
   "dependencies": {

@@ -1,14 +1,16 @@
-const routes = require('express').Router();
-const productRoutes = require('./ProductRoutes');
+import {Router} from 'express';
+import productRoutes from './ProductRoutes.js';
 
-routes.get('/',(request, response) => {
-    response.send('Welcome to API');
+const routes = new Router();
+
+routes.get('/', (request, response) => {
+  response.send('Welcome to API');
 });
 
 routes.get('/check', (request, response) => {
-    response.send("Connected");
+  response.send('Connected');
 });
 
 routes.use('/products', productRoutes);
 
-module.exports = routes;
+export default routes;

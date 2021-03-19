@@ -1,38 +1,37 @@
-const database = require("../db");
+import database from '../db.js';
 
-const Product = function(product) {
-    this.title = product.title;
-    this.description = product.description;
-    this.published_at = product.published_at;
-    this.active = product.active;
+// TODO: Replace by type definition
+// const Product = function(product) {
+//     this.title = product.title;
+//     this.description = product.description;
+//     this.published_at = product.published_at;
+//     this.active = product.active;
+// };
+
+export function create(product) {
+  return database('products')
+      .insert(product);
 };
 
-Product.create = (product) => {
-    return database('products')
-        .insert(product);
+export function findById(productId) {
+  return database('products')
+      .where('id', productId);
 };
 
-Product.findById = (productId) => {
-    return database('products')
-        .where('id', productId);
+export function getAll() {
+  return database.select().from('products').limit(50);
 };
 
-Product.getAll = () => {
-    return database.select().from('products').limit(50);
-};
- 
-Product.update = (productId, product) => {
-    product.update_at = database.fn.now();
+export function update(productId, product) {
+  product.update_at = database.fn.now();
 
-    return database('products')
-        .where({ id: productId })
-        .update(product);
+  return database('products')
+      .where({id: productId})
+      .update(product);
 };
 
-Product.delete = (productId) => {
-    return database('products')
-        .where('id', productId)
-        .del();
+export function remove(productId) {
+  return database('products')
+      .where('id', productId)
+      .del();
 };
-
-module.exports = Product;
