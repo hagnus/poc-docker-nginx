@@ -1,5 +1,6 @@
+import { Knex } from "knex";
 
-exports.seed = function(knex) {
+export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   return knex('products').del()
     .then(function () {
@@ -11,4 +12,4 @@ exports.seed = function(knex) {
         {title: 'Another Sample', description: 'Just another one', active: true }
       ]);
     });
-};
+}

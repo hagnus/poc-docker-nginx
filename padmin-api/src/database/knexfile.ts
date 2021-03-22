@@ -1,11 +1,13 @@
-import knex from 'knex';
+import dotenv from 'dotenv';
 
-const DB_CONFIGURATION = {
+dotenv.config({path: __dirname+'/../../../.env'});
+
+export default {
   development: {
     client: 'mysql',
     connection: {
-      host: 'padmin-db',
-      database: 'padmin',
+      host: process.env.DB_HOST || 'localhost',
+      database: process.env.DB_NAME || 'padmin',
       port: process.env.DB_PORT || 3306,
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASSWORD || 'root',
@@ -16,15 +18,18 @@ const DB_CONFIGURATION = {
     },
     migrations: {
       tableName: 'knex_migrations',
+      directory: './migrations',
+    },
+    seeds: {
+      directory: './seeds',
     },
   },
 
   staging: {
+
   },
 
   production: {
 
-  },
+  }
 };
-
-export default knex(DB_CONFIGURATION[process.env.NODE_ENV || 'development']);

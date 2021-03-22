@@ -1,5 +1,5 @@
-import database from '../knexconfig';
-import {Product} from '../types/Product';
+import database from '../database/connection';
+import {Product} from '../types/product';
 
 
 export function create(product: Product): Promise<number[]> {

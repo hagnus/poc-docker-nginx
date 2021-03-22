@@ -1,11 +1,12 @@
+import { Knex } from "knex";
 
-exports.up = function(knex) {
+export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable('products', function (table) {
         table.increments('id');
         table.string('title');
         table.string('description');
         table.timestamp('update_at').nullable();
-        table.timestamp('published_at').nullable();;
+        table.timestamp('published_at').nullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.boolean('active').defaultTo(false);
     }).createTable('tags', function (table) {
@@ -28,13 +29,13 @@ exports.up = function(knex) {
         table.boolean('taxable').defaultTo(true);
         table.integer('image_id').nullable();
         table.integer('invetory_id').nullable();
-    })
-};
+    });
+}
 
-exports.down = function(knex) {
+export async function down(knex: Knex): Promise<void> {
     return knex.schema
         .dropTable("variants")
         .dropTable("products_tags")
         .dropTable("products")
         .dropTable("tags")
-};
+}
