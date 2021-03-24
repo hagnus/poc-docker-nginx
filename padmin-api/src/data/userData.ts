@@ -1,5 +1,5 @@
 import database from '../database/connection';
-import {User} from '../types/user';
+import {User} from '../utils/types';
 
 
 export function create(user: User): Promise<number[]> {
