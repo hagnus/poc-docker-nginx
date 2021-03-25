@@ -4,11 +4,9 @@ import * as ProductService from '../services/productService';
 const productRoutes = Router();
 
 productRoutes.post('/', async (request, response) => {
-    const generatedId = await ProductService.create(request.body);
+    const products = await ProductService.create(request.body);
 
-    response.status(200).json({
-        id: generatedId[0],
-    });
+    response.status(200).json(products);
 });
 
 productRoutes.get('/', async (resquest, response) => {
@@ -24,21 +22,15 @@ productRoutes.get('/:id', async (request, response) => {
 });
 
 productRoutes.delete('/:id', async (request, response) => {
-    const affectedRows = await ProductService.remove(request.params.id);
+    const deletedProducts = await ProductService.remove(request.params.id);
 
-    response.status(200).json({
-        affectedRows,
-        message: 'Product(s) deleted!',
-    })
+    response.status(200).json(deletedProducts);
 });
 
 productRoutes.put('/:id', async (request, response) => {
-    const affectedRows = await ProductService.update(request.params.id, request.body);
+    const updatedProducts = await ProductService.update(request.params.id, request.body);
 
-    response.status(200).json({
-        affectedRows,
-        message: 'Product(s) updated!',
-    })
+    response.status(200).json(updatedProducts);
 });
 
 export default productRoutes;

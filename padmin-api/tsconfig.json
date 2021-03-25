@@ -6,7 +6,6 @@
     "lib": ["es6"],               
     "allowJs": true,
     "outDir": "dist",                          
-    "rootDir": "src",
     "strict": true,         
     "noImplicitAny": true,
     "esModuleInterop": true,
@@ -17,6 +16,7 @@
     "src/database/seeds/**/*",
     "./node_modules/**/*",
     "./db/data/**/*",
-    "./dist/**/*"
+    "./dist/**/*",
+    "**/*.test.ts"
   ]
 }

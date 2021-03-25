@@ -4,11 +4,9 @@ import * as UserService from '../services/userService';
 const userRoutes = Router();
 
 userRoutes.post('/', async (request, response) => {
-    const generatedId = await UserService.create(request.body);
+    const newUser = await UserService.create(request.body);
 
-    response.status(200).json({
-        id: generatedId[0],
-    });
+    response.status(200).json(newUser);
 });
 
 userRoutes.get('/', async (resquest, response) => {
@@ -26,19 +24,13 @@ userRoutes.get('/:id', async (request, response) => {
 userRoutes.delete('/:id', async (request, response) => {
     const affectedRows = await UserService.remove(request.params.id);
 
-    response.status(200).json({
-        affectedRows,
-        message: 'User(s) deleted!',
-    })
+    response.status(200).json(affectedRows);
 });
 
 userRoutes.put('/:id', async (request, response) => {
     const affectedRows = await UserService.update(request.params.id, request.body);
 
-    response.status(200).json({
-        affectedRows,
-        message: 'User(s) updated!',
-    })
+    response.status(200).json(affectedRows);
 });
 
 export default userRoutes;

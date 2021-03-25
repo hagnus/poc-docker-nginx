@@ -2,20 +2,20 @@ version: "3"
 services:
     padmin-db:
         container_name: padmin-db
-        build:
-            context: "./padmin-api/db"
-            dockerfile: "Dockerfile"
+        image: postgres
+        restart: unless-stopped
         ports:
             - "${DB_PORT}:${DB_PORT}"
         expose:
             - "${DB_PORT}"
-        command: --default-authentication-plugin=mysql_native_password           
         environment:
-            MYSQL_USER: "${DB_USER}"
-            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
-            MYSQL_DATABASE: padmin
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+            PGDATA: /data/postgres
         volumes:
-            - ./padmin-api/db/data:/var/lib/mysql
+            - ./padmin-api/db/postgres:/data/postgres
+            - ./padmin-api/create-test-db.sh:/docker-entrypoint-initdb.d/create-test-db.sh
         restart: always
         networks: 
             - padmin

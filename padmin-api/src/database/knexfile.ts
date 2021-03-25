@@ -1,17 +1,40 @@
 import dotenv from 'dotenv';
+import { Knex } from 'knex';
 
 dotenv.config({path: __dirname+'/../../../.env'});
 
-export default {
+interface KnexConfig {
+  [key: string]: Knex.Config;
+}
+
+const connection = {
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_NAME,
+  port: parseInt(process.env.DB_PORT as string),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+}
+
+const knexConfig: KnexConfig = {
   development: {
-    client: 'mysql',
-    connection: {
-      host: process.env.DB_HOST || 'localhost',
-      database: process.env.DB_NAME || 'padmin',
-      port: process.env.DB_PORT || 3306,
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'root',
+    client: 'pg',
+    connection,
+    pool: {
+      min: 2,
+      max: 10,
     },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './migrations',
+    },
+    seeds: {
+      directory: './seeds',
+    },
+  },
+
+  test: {
+    client: 'pg',
+    connection,
     pool: {
       min: 2,
       max: 10,
@@ -33,3 +56,5 @@ export default {
 
   }
 };
+
+export default knexConfig;
