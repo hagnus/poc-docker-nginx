@@ -5,6 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "migrate:make": "npx knex migrate:make --knexfile src/database/knexfile.ts -x ts",
+    "migrate:latest:test": "npx cross-env NODE_ENV=test knex migrate:latest --knexfile src/database/knexfile.ts",
+    "migrate:rollback:test": "npx cross-env NODE_ENV=test knex migrate:rollback --knexfile src/database/knexfile.ts",
     "migrate:latest": "npx knex migrate:latest --knexfile src/database/knexfile.ts",
     "migrate:rollback": "npx knex migrate:rollback --knexfile src/database/knexfile.ts",
     "seed:make": "npx knex seed:make --knexfile src/database/knexfile.ts -x ts",
@@ -12,8 +14,9 @@
     "build": "rimraf ./build && tsc",
     "build:watch": "npx tsc -w",
     "start:dev": "npx nodemon",
+    "start:test": "npx cross-env NODE_ENV=test nodemon",
     "start": "npm run build && node dist/app.js",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [
     "Docker"
@@ -28,6 +31,7 @@
     "@typescript-eslint/parser": "^4.18.0",
     "axios": "^0.21.1",
     "concurrently": "^6.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.22.0",
     "jest": "^26.6.3",
     "nodemon": "^1.18.10",

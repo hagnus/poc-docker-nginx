@@ -5,6 +5,6 @@
 /padmin-app/node_modules/*
 /padmin-app/.next/*
 
-.env
+*.env
 .vscode/*
 ./padmin-api/dist/*

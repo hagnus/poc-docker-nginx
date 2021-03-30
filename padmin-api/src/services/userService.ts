@@ -1,7 +1,7 @@
 import * as UserData from '../data/userData';
-import { User } from '../utils/types';
+import { User, PostUser } from '../utils/types';
 
-export function create (user: User): Promise<User[]> {
+export function create (user: PostUser): Promise<User[]> {
   return UserData.create(user);
 }
 

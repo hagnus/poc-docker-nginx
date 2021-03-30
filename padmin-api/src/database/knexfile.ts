@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
 
-dotenv.config({path: __dirname+'/../../../.env'});
-
+const ENVIRONMENT = process.env.NODE_ENV ? process.env.NODE_ENV : '';
+dotenv.config({path: `${__dirname}/../../../${ENVIRONMENT}.env`});
+// console.log('KNEX', result.parsed);
 interface KnexConfig {
   [key: string]: Knex.Config;
 }

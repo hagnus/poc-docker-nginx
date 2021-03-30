@@ -1,7 +1,7 @@
 import * as ProductData from '../data/productData';
-import { Product } from '../utils/types';
+import { Product, PostProduct } from '../utils/types';
 
-export function create (product: Product): Promise<Product[]> {
+export function create (product: PostProduct): Promise<Product[]> {
   return ProductData.create(product);
 }
 

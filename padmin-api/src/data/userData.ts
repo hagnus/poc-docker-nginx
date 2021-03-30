@@ -1,9 +1,9 @@
 import database from '../database/connection';
-import {User} from '../utils/types';
+import {User, PostUser} from '../utils/types';
 
-const exposedFields = ['id', 'name', 'active'];
+const exposedFields = ['id', 'name', 'email', 'active'];
 
-export function create(user: User): Promise<User[]> {
+export function create(user: PostUser): Promise<User[]> {
   return database('users')
       .returning(exposedFields)
       .insert(user);

@@ -1,9 +1,9 @@
 import database from '../database/connection';
-import {Product} from '../utils/types';
+import {Product, PostProduct} from '../utils/types';
 
 const exposedFields = ['id', 'title', 'description', 'active'];
 
-export function create(product: Product): Promise<Product[]> {
+export function create(product: PostProduct): Promise<Product[]> {
   return database<Product>('products')
       .returning(exposedFields)
       .insert(product);
@@ -15,7 +15,7 @@ export function findById(productId: string): Promise<Product> {
 }
 
 export function getAll(): Promise<Product[]> {
-  return database.select().from('products').limit(50);
+  return database.select().from('products');
 }
 
 export function update(productId: string, product: Product): Promise<Product[]> {
