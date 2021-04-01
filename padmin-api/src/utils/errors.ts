@@ -26,7 +26,7 @@ export function DuplicatedError(entity: string): CustomError {
 export function InvalidUuidError(value: string): CustomError {
     return {
         errorType: ErrorType.InvalidId,
-        message: `${value} is not a valid uuid`
+        message: `'${value}' is not a valid uuid`
     }
 }
 

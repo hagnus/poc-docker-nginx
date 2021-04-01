@@ -86,4 +86,11 @@ describe('environmental variables', () => {
 		expect(response.status).toBe(404);
 		expect(response.data).toBe("Product not found");
 	});
+
+	test('Should get error to get product', async function () {	
+		const response = await request(`products/invalid-id`, 'get');
+
+		expect(response.status).toBe(400);
+		expect(response.data).toBe("'invalid-id' is not a valid uuid");
+	});
 });
