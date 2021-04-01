@@ -9,8 +9,8 @@ export function create(product: PostProduct): Promise<Product[]> {
       .insert(product);
 }
 
-export function findById(productId: string): Promise<Product> {
-  return database<string, Product>('products')
+export function findById(productId: string): Promise<Product[]> {
+  return database<string, Product[]>('products')
       .where('id', productId);
 }
 
