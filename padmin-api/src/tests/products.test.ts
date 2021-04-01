@@ -45,6 +45,22 @@ describe('environmental variables', () => {
 		await ProductsService.remove(product.id);
 	});
 
+	test('Should get 409 saving an existent product', async function () {
+		const existentProducts = await ProductsService.create(generate());
+		const response = await request('products', 'post', existentProducts[0]);
+
+		expect(response.status).toBe(409);
+		expect(response.data).toBe(`Product (${existentProducts[0].title}) already exists`);
+		await ProductsService.remove(existentProducts[0].id);
+	});
+
+	test('Should get 400 saving a product', async function () {
+		const response = await request('products', 'post', {});
+
+		expect(response.status).toBe(400);
+		expect(response.data).toBe("'title' is required in this process");
+	});		
+
 	test('Should update a product', async function () {
 		const product = await ProductsService.create(generate());
 		product[0].title = 'changed title';
@@ -59,6 +75,17 @@ describe('environmental variables', () => {
 		await ProductsService.remove(product[0].id);
 	});
 
+	test('Should get 400 to update a product with invalid id', async function () {	
+		const product = await ProductsService.create(generate());
+		product[0].title = '400 title';
+		product[0].description = '400 description';
+		const response = await request(`products/not-uuid`, 'put', product[0]);
+
+		expect(response.status).toBe(400);
+		expect(response.data).toBe("'not-uuid' is not a valid uuid");
+		await ProductsService.remove(product[0].id);
+	});
+
 	test('Should delete a product', async function () {
 		const newProduct = await ProductsService.create(generate());	
 		const response = await request(`products/${newProduct[0].id}`, 'delete');	
@@ -66,6 +93,13 @@ describe('environmental variables', () => {
 		
 		expect(response.status).toBe(200);
 		expect(products).toHaveLength(0);
+	});
+
+	test('Should get 400 to delete a product with invalid id', async function () {	
+		const response = await request(`products/123`, 'delete');
+
+		expect(response.status).toBe(400);
+		expect(response.data).toBe("'123' is not a valid uuid");
 	});
 
 	test('Should get a product by id', async function () {
@@ -80,14 +114,14 @@ describe('environmental variables', () => {
 		await ProductsService.remove(product.id);
 	});
 
-	test('Should get error to get product', async function () {	
+	test('Should get 404 to get an inexistent product', async function () {	
 		const response = await request(`products/${genericUiid}`, 'get');
 
 		expect(response.status).toBe(404);
 		expect(response.data).toBe("Product not found");
 	});
 
-	test('Should get error to get product', async function () {	
+	test('Should get 400 to get product with invalid id', async function () {	
 		const response = await request(`products/invalid-id`, 'get');
 
 		expect(response.status).toBe(400);

@@ -9,27 +9,32 @@ export function create(product: PostProduct): Promise<Product[]> {
       .insert(product);
 }
 
-export function findById(productId: string): Promise<Product[]> {
+export function findById(uuid: string): Promise<Product[]> {
   return database<string, Product[]>('products')
-      .where('id', productId);
+      .where('id', uuid);
+}
+
+export function findBy(field: string, value: any): Promise<Product[]> {
+  return database<never, Product[]>('products')
+      .where(field, value);
 }
 
 export function getAll(): Promise<Product[]> {
   return database.select().from('products');
 }
 
-export function update(productId: string, product: Product): Promise<Product[]> {
+export function update(uuid: string, product: Product): Promise<Product[]> {
   product.update_at = database.fn.now();
 
   return database('products')
-      .where({id: productId})
+      .where({id: uuid})
       .returning(exposedFields)
       .update(product);
 }
 
-export function remove(productId: string): Promise<Product[]> {
+export function remove(uuid: string): Promise<Product[]> { 
   return database('products')
-      .where('id', productId)
+      .where('id', uuid)
       .returning(exposedFields)
       .del();
 }

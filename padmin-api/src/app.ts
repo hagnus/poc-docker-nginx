@@ -21,7 +21,12 @@ function errorHandler(error: CustomError, response: Response) {
       break;
 
     case ErrorType.InvalidId:
+    case ErrorType.RequiredInformation:
       response.status(400).send(error.message)
+      break;
+
+    case ErrorType.RecordDuplicated:
+      response.status(409).send(error.message)
       break;
 
     default:

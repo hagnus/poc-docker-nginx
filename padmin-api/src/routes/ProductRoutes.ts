@@ -1,38 +1,52 @@
-import {Router} from 'express';
+import {NextFunction, Request, Response, Router} from 'express';
 import * as ProductService from '../services/productService';
 
 const productRoutes = Router();
 
-productRoutes.post('/', async (request, response, next) => {
-    const products = await ProductService.create(request.body);
-
-    response.status(201).json(products);
-});
-
-productRoutes.get('/', async (resquest, response, next) => {
-    const result = await ProductService.getAll();
-    response.status(200).json(result);
-});
-
-productRoutes.get('/:id', async (request, response, next) => {
+productRoutes.post('/', async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const result = await ProductService.findById(request.params.id);        
-        response.status(200).json(result);
+        const products = await ProductService.create(request.body);
+        response.status(201).json(products);
     } catch (error) {
         next(error);
     }
 });
 
-productRoutes.delete('/:id', async (request, response, next) => {
-    const deletedProducts = await ProductService.remove(request.params.id);
-
-    response.status(200).json(deletedProducts);
+productRoutes.get('/', async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const products = await ProductService.getAll();
+        response.status(200).json(products);
+    } catch (error) {
+        next(error);
+    }
 });
 
-productRoutes.put('/:id', async (request, response, next) => {
-    const updatedProducts = await ProductService.update(request.params.id, request.body);
+productRoutes.get('/:id', async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const products = await ProductService.findById(request.params.id);
+        response.status(200).json(products);
+    } catch (error) {
+        next(error);
+    }
+});
 
-    response.status(200).json(updatedProducts);
+productRoutes.delete('/:id', async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const deletedProducts = await ProductService.remove(request.params.id);
+        response.status(200).json(deletedProducts);
+    } catch (error) {
+        next(error);
+    }
+});
+
+productRoutes.put('/:id', async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const updatedProducts = await ProductService.update(request.params.id, request.body);
+        response.status(200).json(updatedProducts);
+    } catch (error) {
+        console.log('UPDATE EXCEPTION', error);
+        next(error);
+    }
 });
 
 export default productRoutes;

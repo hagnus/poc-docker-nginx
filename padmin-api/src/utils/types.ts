@@ -1,5 +1,11 @@
 import { Knex } from "knex";
 
+export interface Model {
+    id: string;
+    create_at?: Knex.Raw;
+    update_at?: Knex.Raw;
+}
+
 export interface PostProduct {
     title: string;
     description: string;

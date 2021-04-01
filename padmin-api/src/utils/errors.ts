@@ -1,7 +1,8 @@
 export enum ErrorType {
     InvalidId = 0,
     RecordNotFound = 1,
-    RecordDuplicated = 2
+    RecordDuplicated = 2,
+    RequiredInformation = 3,
 }
 
 export type CustomError = {
@@ -20,6 +21,13 @@ export function DuplicatedError(entity: string): CustomError {
     return {
         errorType: ErrorType.RecordDuplicated,
         message: `${entity} already exists`
+    }
+}
+
+export function RequiredInformationError(fieldName: string): CustomError {
+    return {
+        errorType: ErrorType.RequiredInformation,
+        message: `'${fieldName}' is required in this process`
     }
 }
 
